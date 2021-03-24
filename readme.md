@@ -223,6 +223,72 @@ new project dir, for example: `my-lib`
 
 `yarn build` to compile --> creates `/dist` dir
 
+### Configuring ESLint
+
+`yarn eslint --init` - convenient wizard
+
+`rm package-lock.json` as we're going with yarn
+
+then run `yarn` to patch up `yarn.lock`
+
+and we tweak `.eslintrc.json` a little
+
+We also need to create a tsconfig specifically for eslint `tsconfig.eslint.json` - this extends `tsconfig.json` - need to add `"project": "tsconfig.eslint.json"` to `.eslintrc.json` - this is all convoluted, but it's set and forget.
+
+### Testing
+
+`yarn add -D jest @types/jest @babel/preset-env @babel/preset-typescript`
+
+`mkdir tests` and make a `index.test.ts` inside that
+
+tests need their own `tsconfig.json` because of some import rules we set up earlier. This extends `../tsconfig.json`
+
+create a `.babelrc`
+
+### API Extractor Setup
+
+API documentation tool
+
+`yarn add -D @microsoft/api-extractor @microsoft/api-documenter`
+
+`yarn api-extractor init` --> `api-extractor.json` and configure the file...
+
+### Running API Extractor
+
+`mkdir etc`
+
+`yarn api-extractor run --local` which creates an 'API report' in `etc/my-lib.api.md` 
+
+add `/temp` to `.gitignore` - `/temp` is more of a staging area
+
+normally we run `yarn api-extractor run` in CI
+
+### API Documenter
+
+`yarn api-documenter markdown -i temp -o docs` to generate the docs!
+
+on Github we can use *Github Pages* to host our very own doc site.
+
+<img src="img/image-20210324142337628.png" alt="image-20210324142337628" width=600 />
+
+Alternatives: https://typedoc.org/, https://esdoc.org/ 
+
+each with their pros and cons.
+
+and more ... https://mike-north.github.io/js-documentation-cases/
+
+*API Extractor* is the presenter's favourite. The docs look basic, but its the most trustworthy.
+
+### strict In-Depth
+
+https://frontendmasters.com/courses/production-typescript/strict-in-depth/
+
+
+
+
+
+
+
 
 
 
