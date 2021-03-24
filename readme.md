@@ -207,6 +207,28 @@ import type { useAsyncDataEffect } from '../src/utils/api';
 
 ### Creating a Project from Scratch
 
+new project dir, for example: `my-lib` 
+
+`npx gitignore node` - utility to make `.gitignore` for a variety of projects 
+
+`yarn init --yes` - start me off a `package.json` and configure `package.json`
+
+`yarn add -D typescript eslint jest`
+
+(optional) use volta to pin versions of node and yarn: `volta pin node yarn` 
+
+### tsconfig
+
+`yarn tsc --init` - init a boilerplate `tsconfig.json` - and we'll tweak it to be a 'strict' configuration - i.e. let's set the bar high because this is a new TS project, not a conversion of JS to TS, where some work might be needed to bring it up to scratch.
+
+`yarn build` to compile --> creates `/dist` dir
+
+
+
+
+
+
+
 
 
 
