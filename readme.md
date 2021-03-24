@@ -124,7 +124,90 @@ type Corner = `${'top' | 'bottom'}—${'left' | 'right'}`;
 
 ### Error Handling with Unknown
 
-https://frontendmasters.com/courses/production-typescript/error-handling-with-unknown/
+```typescript
+function somethingRisky() {}
+
+try {
+    somethingRisky()
+} catch (err: unknown) {
+    if (err instanceof Error) { // type guard
+        console.log(err.stack)
+        // ahh, this is an 'expected' error
+    } else {
+        console.log(err)
+        // something strange
+    }
+}
+// encourages 'proper' error handling
+```
+
+which we might write as:
+
+```typescript
+function somethingRisky() {}
+
+function assertIsError(err: any): asserts err is Error {
+    if (!(err instanceof Error)) throw new Error (`Not an error: ${err}`);
+}
+
+// typed assertions
+
+try {
+    somethingRisky();
+} catch (err: unknown) {
+    assertIsError(err);
+    console.log(err.stack);
+}
+```
+
+this could be seen in a negative test case within a test suite.
+
+### Declaration Files & Type-only imports
+
+Declaration files can be generated from JS
+
+`tsconfig.json` --> `allowJs`, `checkJs`
+
+```typescript
+import type { useAsyncDataEffect } from '../src/utils/api';
+// I just want the type information from this module and not invoke the actual function
+
+// so helps packaging utils like webpack/parcel keep everything nice and light
+```
+
+### TypeScript in Apps vs Libraries
+
+**Myths**
+
+- :x: "No more runtime errors" - nope, just those related to types! <-- but that is still very very useful. TS compiles to JS. It's gone at runtime!
+
+- :x: "My code will run measurably faster" - encourages you to write 'good' code, but won't stop you from creating clunky apps.
+
+**Most TS Codebases**
+
+- Improved developer experience: tooltips, autocomplete, in-editor docs.
+- Less context switching. Less need to "drill into" to adjacent code to understand what's going on.
+- Micro "rigor" that adds up to macro benefits. Short-term work in detailing types that makes building and maintaining a large code base easier.
+- More formalised and stable contract between stuff (i.e. how one component relates to another)
+
+**App-specific concerns** 
+
+"leaf-level" dependencies - no one depends on it.
+
+- More richness when working with data
+- Better encapsulation tools (private, protected, public) to facilitate maintaining lazy loading boundaries
+- Improved "major version upgrade" story for typed libraries - you see incompatibilities straight away (type-based ones)
+
+**Library-specific concerns**
+
+- Create and maintain a deliberate public API surface ... while still being able to create a private API surface to use between modules or components 
+- Keep your users on track (i.e. `enum` allows you to signal allowed value sets between than number)
+- Semantic Versioning "SemVer" (deprecations, brekage)
+- API docs - TS incentivises great API docs
+
+### Creating a Project from Scratch
+
+
 
 
 
