@@ -476,7 +476,17 @@ Switching `"noImplicitAny": true` and fixing all the new errors!
 
 ### Enabling Stricter Settings
 
+[commit](https://github.com/thomashoddinott/fem-production-grade-typescript/commit/f3cd4a674b0f7b275e668329ebe3206510279e56)
 
+## Using ESLint
+
+configuring `.eslintrc` - [commit](https://github.com/thomashoddinott/fem-production-grade-typescript/commit/d72b4576747c891cbf0b6485997373d1e234d33f)
+
+more getting eslint to pass after configuring it ... - [commit](https://github.com/thomashoddinott/fem-production-grade-typescript/commit/2a0377234872eb261a06b6c49363c65fc808bfd0)
+
+### Using Interfaces
+
+https://frontendmasters.com/courses/production-typescript/using-interfaces/
 
 
 
