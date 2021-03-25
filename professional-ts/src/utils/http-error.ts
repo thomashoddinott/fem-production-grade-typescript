@@ -7,7 +7,7 @@ export enum HTTPErrorKind {
   Redirect = 300,
   Client = 400,
   Server = 500,
-};
+}
 
 /**
  *
@@ -25,7 +25,7 @@ function determineKind(status: number): HTTPErrorKind {
 
 /** @param {HTTPErrorKind} kind */
 export default class HTTPError extends Error {
-  kind:any
+  kind: any
   /**
    *
    * @param {Response} info
