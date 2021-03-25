@@ -472,6 +472,10 @@ Switching `"noImplicitAny": true` and fixing all the new errors!
 
 `tsc --watch --preserveWatchOutput`
 
+[commit](https://github.com/thomashoddinott/fem-production-grade-typescript/commit/ad7e2689f8aaa9458c744b9221e388c0027d6fc2)
+
+### Enabling Stricter Settings
+
 
 
 
