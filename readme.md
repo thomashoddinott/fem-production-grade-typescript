@@ -441,7 +441,7 @@ To make this easier, let's break it up:
 }
 ```
 
-run these commands in [./professional-ts](./professional-ts):
+run these commands in [./professional-ts](./professional-ts) to rename everything:
 
 ```shell
 # rename all JSX files in src/ to TSX
@@ -455,6 +455,22 @@ find tests -name '*.jsx.snap' -exec bash -c 'git mv "$0" "${0%.jsx.snap}.tsx.sna
 # rename all JS files in tests/ to TS
 find tests -name '*.js' -exec bash -c 'git mv "$0" "${0%.js}.ts"' "{}" \;
 ```
+
+change the entry point to `src="src/index.ts"` in `index.html`
+
+then run `tsc` --> errors!
+
+we need to dial the compiler down: [commit1](https://github.com/thomashoddinott/fem-production-grade-typescript/commit/6d72c138806761ebdb1b223e7b181afc5d2072d7), [commit2](https://github.com/thomashoddinott/fem-production-grade-typescript/commit/7e82f3f0cb5655a608fc584317f6d91993ca4b5a), [commit3](https://github.com/thomashoddinott/fem-production-grade-typescript/commit/ea00cbdfc33b9fef78e68ddce94138c69ba43d59)
+
+### Typing React Components
+
+[commit](https://github.com/thomashoddinott/fem-production-grade-typescript/commit/c09272c706055401555c42df24713413c6ee600c)
+
+### Typing 3rd Party Libraries
+
+Switching `"noImplicitAny": true` and fixing all the new errors!
+
+`tsc --watch --preserveWatchOutput`
 
 
 
