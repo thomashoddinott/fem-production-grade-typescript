@@ -281,7 +281,190 @@ and more ... https://mike-north.github.io/js-documentation-cases/
 
 ### strict In-Depth
 
-https://frontendmasters.com/courses/production-typescript/strict-in-depth/
+Beware, strict includes more than things that just begin with `strict` ... e.g. `noImplicitAny`: 
+
+```typescript
+// e.g. - even though b is obviously type number...
+
+function sum2(a: number, b): number {
+	// not allowed
+}
+
+function sum2(a: number, b:any): number {
+	// not allowed - the author MUST tell us it is type any
+}
+```
+
+`noImplicitThis`:
+
+```typescript
+declare const elem: HTMLButtonElement;
+
+elem.addEventListener("click", function () {
+  console.log(this.className);
+  // TS knows 'this' is an HTMLButtonElement
+})
+```
+
+`strictNullChecks`:
+
+```typescript
+// if (s) {
+  s.split(',') // this now errors without a guard statement.
+// }
+```
+
+`strictFunctionTypes`, ... and more!
+
+### Even more strict
+
+`noImplicitReturns` 
+
+```typescript
+function sum2(a: number, b: number) { // not allowed
+  const sum = a + b;
+  return sum;
+}
+
+function sum2(a: number, b: number): number { // must say what the fn returns... a number!
+  const sum = a + b;
+  return sum;
+}
+```
+
+and more ...
+
+### Viral Options
+
+avoid these:
+
+`allowSyntheticDefaultImports`
+
+ `esModuleInterop`
+
+`skipLibCheck`
+
+### Converting a Project to TypeScript
+
+Now we've configured a new TS project `my-lib`, let's focusing on the Slack clone, which we'll convert from JS to TS.
+
+**What not to do**
+
+- Functional changes at the same time
+- Attempt this with low test coverage
+- Let 'perfect be enemy of the good'
+- Forget to add tests for your types
+- Publish types for consumer use while they're in a "weak" state - this is the last step, once your ready to publish declarations
+
+**1. Compiling in "loose mode"**
+
+- Start with tests passing
+- Rename all `.js` to `.ts` allowing implicit any
+- Fix only what's not type-checking or causing compile errors
+- **Be careful to avoid chaning behaviour**
+- Get tests passing again
+
+**2. Explicit Any**
+
+- Start with tests passing
+- Ban implicit any `{"noImplicitAny": true}`
+- Where possible, provide a specific and appropriate type
+  - Import types for deps from `DefinitelyTyped`
+  - otherwise `eplicit` any
+- ... get tests passing again
+
+**3. Squash explicit anys, enable strict mode**
+
+- Incrementally, in small chunks
+
+- Enable strict mode
+
+  ```json
+  "strictNullChecks": true,
+  "strict": true,
+  "strictFunctionTypes": true,
+  "strictBindCallApply": true
+  ```
+
+- Replace explicit anys w/ more appropriate types
+
+- Try really hard to avoid unsafe casts
+
+### Typing a Project to strict
+
+**Step 3 is 80% of the work**
+
+To make this easier, let's break it up:
+
+3.1) strict mode 
+
+```json
+// tsconfig.json
+"compilerOptions": {
+	"strict": true,
+}
+```
+
+3.2) more strict mode
+
+```json
+// tsconfig.json
+"compilerOptions": {
+	"strict": true,
+    "noUnsedLocals": true,
+    "stripInternal": true,
+    "types": [],
+    "forceConsistentCasingInFilesNames": true
+}
+```
+
+3.3) TS-specific linting
+
+```json
+// .eslintrc
+"parser": "@typescript-eslint/parser",
+"extends": [
+    "prettier/@typescript-eslint",
+    "plugin:@typescript-eslint/recommended",
+    "plugin@typescript-eslint/recommended-requiring-type-checking"
+]
+```
+
+3.4) Even more strict mode
+
+```json
+// .eslintrc
+"rules": {
+    "@typescript-eslint/no-unsafe-assignment": "on",
+    "@typescript-eslint/no-unsafe-return": "on",
+    "@typescript-eslint/no-explicit-any": "on"
+}
+```
+
+run these commands in [./professional-ts](./professional-ts):
+
+```shell
+# rename all JSX files in src/ to TSX
+find src -name '*.jsx' -exec bash -c 'git mv "$0" "${0%.jsx}.tsx"' "{}" \;
+# rename all JS files in src/ to TS
+find src -name '*.js' -exec bash -c 'git mv "$0" "${0%.js}.ts"' "{}" \;
+# rename all JSX files in src/ to TSX
+find tests -name '*.jsx' -exec bash -c 'git mv "$0" "${0%.jsx}.tsx"' "{}" \;
+# rename all JSX files in src/ to TSX
+find tests -name '*.jsx.snap' -exec bash -c 'git mv "$0" "${0%.jsx.snap}.tsx.snap"' "{}" \;
+# rename all JS files in tests/ to TS
+find tests -name '*.js' -exec bash -c 'git mv "$0" "${0%.js}.ts"' "{}" \;
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
