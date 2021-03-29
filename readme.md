@@ -486,7 +486,64 @@ more getting eslint to pass after configuring it ... - [commit](https://github.c
 
 ### Using Interfaces
 
-https://frontendmasters.com/courses/production-typescript/using-interfaces/
+Interfaces are type information.
+
+We can house a collection of interfaces in a `src/types.ts` file.
+
+e.g:
+
+```typescript
+// src/types.ts
+
+  /**
+   * A team, containing one or more chat channels
+   */
+  export interface ITeam { // naming convention is to prefix with I for interfances 
+    iconUrl: string;
+    name: string;
+    id: string;
+    channels: IChannel[];
+  }
+```
+
+and import it with:
+
+```typescript
+import type { ITeam } from '../types';
+```
+
+### Local Type Overrides
+
+Sometimes you'll find incorrect types in packages like DefinitelyTyped. We need to know how to override them if so.
+
+At the top level make a directory called `types/` and add the path in `tsconfig.json`:
+
+```json
+"baseUrl": ".",
+"paths": {
+   "*": ["types/*"]
+ }
+```
+
+And then put declarations there. For example:
+
+```typescript
+// types/react/index.d.ts
+
+export function foo(): void;
+
+// ...
+```
+
+We intercept the compiler with our custom types. It's the place to patch things up.
+
+### Types at Runtime
+
+
+
+
+
+
 
 
 
