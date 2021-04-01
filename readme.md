@@ -545,6 +545,28 @@ We intercept the compiler with our custom types. It's the place to patch things 
 
 Types need tests too. But they are a different type of test to write.
 
+Our Jest tests cover positive test cases: things that *should work and do work*. 
+
+It's harder to write tests for negative test cases in Jest: things that *shouldn't work and must not work*.
+
+**TS doesn't follow semantic versioning!** - every middle release of TS introduces **breaking changes**. 
+
+TS team philosophy: "there's no such thing as a non-breaking change".
+
+Therefore TS team may have to go and fix bugs they've introduced. 
+
+e.g. You can setup your project (on Github, Gitlab, BitBucket, etc.) to test against the latest (nightly) build of TS, catching errors as they as introduced. <-- Early warning system.
+
+### dtslint Setup
+
+read carefully - https://github.com/microsoft/dtslint 
+
+^ this tool isn't designed for what we're using it for, but we're using it anyway...
+
+`tslint.json` is deprecated, yet we use it here...
+
+
+
 
 
 
