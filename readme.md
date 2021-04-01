@@ -539,6 +539,16 @@ We intercept the compiler with our custom types. It's the place to patch things 
 
 ### Types at Runtime
 
+[commit](https://github.com/thomashoddinott/fem-production-grade-typescript/commit/c09325e4c935a9ea66fbb396befdb069f6a9d917) - a bit complicated, might need to re-watch!
+
+### Tests for Types
+
+Types need tests too. But they are a different type of test to write.
+
+
+
+
+
 
 
 
