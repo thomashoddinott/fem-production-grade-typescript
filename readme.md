@@ -567,9 +567,9 @@ read carefully - https://github.com/microsoft/dtslint
 
 ### Writing dtslint Assertions
 
+... couldn't follow instructions, so copied the final copy of the repo (`fem` branch) to [./professional-ts-fixed](./professional-ts-fixed)
 
-
-
+finish off: https://frontendmasters.com/courses/production-typescript/writing-dtslint-assertions/
 
 
 
