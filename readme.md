@@ -565,6 +565,8 @@ read carefully - https://github.com/microsoft/dtslint
 
 `tslint.json` is deprecated, yet we use it here...
 
+### Writing dtslint Assertions
+
 
 
 
