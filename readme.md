@@ -1,4 +1,46 @@
-### Introduction
+My notes from the Production-Grade TypeScript course on Frontend Masters: https://frontendmasters.com/courses/production-typescript/
+
+## Contents
+
+- [Contents](#contents)
+- [Introduction](#introduction)
+  * [Course Project Setup](#course-project-setup)
+- [Features](#features)
+  * [Volta](#volta)
+  * [Optional Chaining & Nullish Coalescing](#optional-chaining--nullish-coalescing)
+  * [Tuple Types & Recursive Type Aliases](#tuple-types--recursive-type-aliases)
+  * [ts-ignore, ts-expect-error](#ts-ignore-ts-expect-error)
+  * [Error Handling with Unknown](#error-handling-with-unknown)
+  * [Declaration Files & Type-only imports](#declaration-files--type-only-imports)
+  * [TypeScript in Apps vs Libraries](#typescript-in-apps-vs-libraries)
+- [Project Implementation](#project-implementation)
+  * [Creating a Project from Scratch](#creating-a-project-from-scratch)
+  * [tsconfig](#tsconfig)
+  * [Configuring ESLint](#configuring-eslint)
+  * [Testing](#testing)
+- [API Extraction](#api-extraction)
+  * [API Extractor Setup](#api-extractor-setup)
+  * [Running API Extractor](#running-api-extractor)
+  * [API Documenter](#api-documenter)
+  * [strict In-Depth](#strict-in-depth)
+  * [Even more strict](#even-more-strict)
+  * [Viral Options](#viral-options)
+- [Converting a Project to TypeScript](#converting-a-project-to-typescript)
+  * [Typing a Project to strict](#typing-a-project-to-strict)
+  * [Typing React Components](#typing-react-components)
+  * [Typing 3rd Party Libraries](#typing-3rd-party-libraries)
+  * [Enabling Stricter Settings](#enabling-stricter-settings)
+- [Using ESLint](#using-eslint)
+  * [Using Interfaces](#using-interfaces)
+  * [Local Type Overrides](#local-type-overrides)
+  * [Types at Runtime](#types-at-runtime)
+- [Tests & Linting](#tests--linting)
+  * [Tests for Types](#tests-for-types)
+  * [dtslint Setup](#dtslint-setup)
+  * [Writing dtslint Assertions](#writing-dtslint-assertions)
+- [Wrapping Up](#wrapping-up)
+
+## Introduction
 
 TypeScript is a programming language, compiler, and a language server.
 
@@ -32,6 +74,8 @@ https://github.com/mike-north/professional-ts/
 
 - Removed this line `// "plugins": ["@babel/plugin-proposal-class-properties"]` from `.babelrc`  - we don't need it?
 - Changed port to 1234 in `index.js`
+
+## Features
 
 ### Volta
 
@@ -202,8 +246,10 @@ import type { useAsyncDataEffect } from '../src/utils/api';
 
 - Create and maintain a deliberate public API surface ... while still being able to create a private API surface to use between modules or components 
 - Keep your users on track (i.e. `enum` allows you to signal allowed value sets between than number)
-- Semantic Versioning "SemVer" (deprecations, brekage)
+- Semantic Versioning "SemVer" (deprecations, breakage)
 - API docs - TS incentivises great API docs
+
+## Project Implementation
 
 ### Creating a Project from Scratch
 
@@ -215,7 +261,7 @@ new project dir, for example: `my-lib`
 
 `yarn add -D typescript eslint jest`
 
-(optional) use volta to pin versions of node and yarn: `volta pin node yarn` 
+(optional) use volta to 'pin' versions of node and yarn: `volta pin node yarn` 
 
 ### tsconfig
 
@@ -244,6 +290,8 @@ We also need to create a tsconfig specifically for eslint `tsconfig.eslint.json`
 tests need their own `tsconfig.json` because of some import rules we set up earlier. This extends `../tsconfig.json`
 
 create a `.babelrc`
+
+## API Extraction
 
 ### API Extractor Setup
 
@@ -277,7 +325,7 @@ each with their pros and cons.
 
 and more ... https://mike-north.github.io/js-documentation-cases/
 
-*API Extractor* is the presenter's favourite. The docs look basic, but its the most trustworthy.
+*API Extractor* is the presenter's favourite. The docs look basic, but it's the most trustworthy.
 
 ### strict In-Depth
 
@@ -344,7 +392,7 @@ avoid these:
 
 `skipLibCheck`
 
-### Converting a Project to TypeScript
+## Converting a Project to TypeScript
 
 Now we've configured a new TS project `my-lib`, let's focusing on the Slack clone, which we'll convert from JS to TS.
 
@@ -361,7 +409,7 @@ Now we've configured a new TS project `my-lib`, let's focusing on the Slack clon
 - Start with tests passing
 - Rename all `.js` to `.ts` allowing implicit any
 - Fix only what's not type-checking or causing compile errors
-- **Be careful to avoid chaning behaviour**
+- **Be careful to avoid changing behaviour**
 - Get tests passing again
 
 **2. Explicit Any**
@@ -539,7 +587,9 @@ We intercept the compiler with our custom types. It's the place to patch things 
 
 ### Types at Runtime
 
-[commit](https://github.com/thomashoddinott/fem-production-grade-typescript/commit/c09325e4c935a9ea66fbb396befdb069f6a9d917) - a bit complicated, might need to re-watch!
+[commit](https://github.com/thomashoddinott/fem-production-grade-typescript/commit/c09325e4c935a9ea66fbb396befdb069f6a9d917) - a bit complicated...
+
+## Tests & Linting
 
 ### Tests for Types
 
@@ -569,33 +619,84 @@ read carefully - https://github.com/microsoft/dtslint
 
 ... couldn't follow instructions, so copied the final copy of the repo (`fem` branch) to [./professional-ts-fixed](./professional-ts-fixed)
 
-finish off: https://frontendmasters.com/courses/production-typescript/writing-dtslint-assertions/
+`yarn dtslint tests/types-dtslint`
 
+```typescript
+// test.ts
 
+import { assertIsTypedArray, isITeam, ITeam } from '.';
 
+const team1: ITeam = null; // $ExpectError
+const team2: ITeam = { channels: [], iconUrl: '', id: '', name: '' }; // $ExpectError
+```
 
+```
+yarn run v1.22.5
+$ /home/thomas/Desktop/fem-production-grade-typescript/professional-ts-fixed/node_modules/.bin/dtslint tests/types-dtslint
+Error: /home/thomas/Desktop/fem-production-grade-typescript/professional-ts-fixed/tests/types-dtslint/test.ts:3:1
+ERROR: 3:1  expect  TypeScript@4.1: Expected an error on this line, but found none.
+ERROR: 4:1  expect  TypeScript@4.1: Expected an error on this line, but found none.
+```
 
+**But this setup is terribly complicated. Surely there's a simpler way?**
 
+--> https://github.com/SamVerschueren/tsd
 
+`yarn tsd tests/types-tsd`
 
+```typescript
+// index.test-d.ts
 
+import { ITeam } from '../../src/types';
+import { expectNotAssignable, expectAssignable } from 'tsd';
 
+expectNotAssignable<ITeam>(null);
+expectAssignable<ITeam>({
+  channels: [],
+  iconUrl: '',
+  id: '',
+  name: '',
+});
 
+```
 
+```
+  tests/types-tsd/index.test-d.ts:4:0
+  ✖  4:0  Argument of type null is assignable to parameter of type any.  
 
+  1 error
+```
 
+**This is way easier to use, but we can't test against multiple versions of TS (???)** - So this is probably OK for most projects? 
 
+`tsd` also had more handy assertions: `expectDeprecated`, etc. 
 
+## Wrapping Up
 
+Why type testing?
 
+Consider if we made Team type any:
 
+```typescript
+// types.ts
 
+export type ITeam = any;
 
+// export interface IUser {
+//   id: number;
+//   username: string;
+//   name: string;
+//   iconUrl: string;
+// }
+```
 
+^ Jest is completely fine with this. i.e. Jest can't tell whether you're using TS correctly...
 
+This is why we worry about **negative test cases**. Certain things should not be allowed; Certain things should be impossible. It's equally important to maintain these conditions!
 
+--> So that's why we use tools like `tsd`
 
-
+This testing gets overlooked in a lot of TS projects. It can save you a lot of time tracking down bugs!
 
 
 
